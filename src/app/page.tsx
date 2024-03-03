@@ -1,7 +1,15 @@
-export default function Home() {
-  return (
-    <main className="p-2">
-     <div>4y+</div>
-    </main>
-  );
+// Components
+import Home from "@/components/Home";
+
+// Context
+import MusicPlayerProvider from "@/store/MusicPlayerCtx";
+
+export default function Page() {
+	return (
+		<main className="p-4 leading-none">
+			<MusicPlayerProvider>
+				<Home />
+			</MusicPlayerProvider>
+		</main>
+	);
 }
