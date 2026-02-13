@@ -34,10 +34,10 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 	}, [viewedAlbum.tracks, player.trackDurations]);
 
 	return (
-		<div className="h-screen flex flex-col items-center px-4 py-6 overflow-hidden sm:overflow-y-auto sm:h-auto sm:min-h-screen">
-			{/* Mobile: toggle above */}
-			<div className="sm:hidden w-full max-w-lg">
-				<p className="text-xs text-mac-text-muted mb-2">eralgo</p>
+		<div className="h-screen flex flex-col items-center px-4 py-4 overflow-hidden sm:overflow-y-auto sm:h-auto sm:min-h-screen sm:justify-center sm:py-6">
+			{/* Desktop: fixed nav on the left edge */}
+			<div className="hidden sm:block fixed left-0 top-6 pl-6 text-left z-10">
+				<p className="text-xs text-mac-text-muted mb-3">eralgo</p>
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
@@ -45,9 +45,9 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				/>
 			</div>
 
-			{/* Desktop: fixed nav on the left edge */}
-			<div className="hidden sm:block fixed left-0 top-6 pl-6 text-left z-10">
-				<p className="text-xs text-mac-text-muted mb-3">eralgo</p>
+			{/* Mobile: toggle above */}
+			<div className="sm:hidden w-full max-w-lg mb-4">
+				<p className="text-xs text-mac-text-muted mb-2">eralgo</p>
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
@@ -79,7 +79,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				</div>
 			</div>
 
-			<div className="w-full max-w-lg mt-auto border border-white/50 rounded-2xl bg-white/10 backdrop-blur-2xl px-3 pb-1.5 pt-2 flex-shrink-0 sm:max-w-xs sm:mt-4">
+			<div className="w-full max-w-lg mt-auto pt-4 border border-white/50 rounded-2xl bg-white/10 backdrop-blur-2xl px-3 pb-1.5 pt-2 flex-shrink-0 sm:max-w-xs sm:mt-4">
 				<p className="text-[9px] text-mac-text-muted tracking-wide truncate mb-2.5">
 					{playingTrack?.title ?? ""}
 				</p>

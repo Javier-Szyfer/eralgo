@@ -21,13 +21,13 @@ export default function TrackItem({
 	return (
 		<button
 			onClick={onSelect}
-			className={`w-full flex items-center gap-3 px-3 py-1.5 text-left border-b border-white/50 last:border-b-0 first:rounded-t-lg last:rounded-b-lg ${
+			className={`w-full flex items-center gap-2 pl-2 pr-3 py-1 text-left border-b border-white/50 last:border-b-0 first:rounded-t-lg last:rounded-b-lg text-[13px] ${
 				isActive
 					? "bg-mac-accent text-mac-accent-text"
 					: "text-mac-text hover:bg-white/30 transition-colors"
 			}`}
 		>
-			<span className="w-6 text-right text-xs tabular-nums opacity-50 flex-shrink-0">
+			<span className="w-5 text-right text-[11px] tabular-nums opacity-50 flex-shrink-0">
 				{isActive && isPlaying ? (
 					<svg
 						width="12"
@@ -52,10 +52,10 @@ export default function TrackItem({
 					index + 1
 				)}
 			</span>
-			<span className="flex-1 text-sm truncate">
+			<span className="flex-1 truncate">
 				{track.title}
 			</span>
-			<span className="text-xs tabular-nums opacity-50 flex-shrink-0">
+			<span className="text-[11px] tabular-nums opacity-50 flex-shrink-0">
 				{formatTime(realDuration ?? track.durationSeconds)}
 			</span>
 		</button>
