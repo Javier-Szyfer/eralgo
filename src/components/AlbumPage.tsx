@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import type { Album } from "@/types";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import AlbumToggle from "./AlbumToggle";
@@ -14,7 +14,24 @@ interface AlbumPageProps {
 
 export default function AlbumPage({ albums }: AlbumPageProps) {
 	const [viewedAlbumIndex, setViewedAlbumIndex] = useState<0 | 1>(0);
+	const [showInfo, setShowInfo] = useState(false);
+	const infoRef = useRef<HTMLDivElement>(null);
 	const viewedAlbum = albums[viewedAlbumIndex];
+
+	useEffect(() => {
+		if (!showInfo) return;
+		const handleClick = (e: MouseEvent | TouchEvent) => {
+			if (infoRef.current && !infoRef.current.contains(e.target as Node)) {
+				setShowInfo(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClick);
+		document.addEventListener("touchstart", handleClick);
+		return () => {
+			document.removeEventListener("mousedown", handleClick);
+			document.removeEventListener("touchstart", handleClick);
+		};
+	}, [showInfo]);
 
 	const player = useAudioPlayer(albums);
 	const playingAlbum = albums[player.playingAlbumIndex];
@@ -36,7 +53,22 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 		<div className="h-dvh flex flex-col items-center px-4 py-4 overflow-y-auto sm:h-auto sm:min-h-screen sm:justify-center sm:py-6 pb-safe">
 			{/* Desktop: fixed nav on the left edge */}
 			<div className="hidden sm:block fixed left-0 top-6 pl-6 text-left z-10">
-				<p className="text-xs text-mac-text-muted mb-3">eralgo</p>
+				<div ref={infoRef} className="flex items-center gap-2 mb-3 relative">
+					<p className="text-xs text-mac-text-muted">eralgo</p>
+					<button
+						onClick={() => setShowInfo(!showInfo)}
+						className="w-4 h-4 rounded-full border border-white/50 bg-white/10 backdrop-blur-2xl text-[8px] text-mac-text-muted flex items-center justify-center hover:bg-white/20 transition-colors"
+					>
+						?
+					</button>
+					{showInfo && (
+						<div className="absolute left-full top-0 ml-2 z-20 border border-white/50 rounded-xl bg-white/10 backdrop-blur-2xl p-3 w-[200px] opacity-0 animate-fade-in-fast">
+							<p className="text-[10px] text-mac-text-muted leading-relaxed">
+								eralgo is an independent electronic producer based in Buenos Aires, Argentina
+							</p>
+						</div>
+					)}
+				</div>
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
@@ -46,7 +78,22 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 
 			{/* Mobile: toggle above */}
 			<div className="sm:hidden w-full max-w-lg mb-4">
-				<p className="text-xs text-mac-text-muted mb-2">eralgo</p>
+				<div ref={infoRef} className="flex items-center gap-2 mb-2 relative">
+					<p className="text-xs text-mac-text-muted">eralgo</p>
+					<button
+						onClick={() => setShowInfo(!showInfo)}
+						className="w-4 h-4 rounded-full border border-white/50 bg-white/10 backdrop-blur-2xl text-[8px] text-mac-text-muted flex items-center justify-center"
+					>
+						?
+					</button>
+					{showInfo && (
+						<div className="absolute top-full left-0 mt-2 z-20 border border-white/50 rounded-xl bg-white/10 backdrop-blur-2xl p-3 max-w-[250px] opacity-0 animate-fade-in-fast">
+							<p className="text-[10px] text-mac-text-muted leading-relaxed">
+								eralgo is an independent electronic producer based in Buenos Aires, Argentina
+							</p>
+						</div>
+					)}
+				</div>
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
