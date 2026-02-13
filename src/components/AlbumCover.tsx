@@ -10,7 +10,7 @@ export default function AlbumCover({ src, alt }: AlbumCoverProps) {
 				src={src}
 				alt={alt}
 				crossOrigin="anonymous"
-				className="w-full h-full object-cover rounded-lg border border-mac-border"
+				className="w-full h-full object-cover rounded-lg border border-white/50"
 			/>
 		</div>
 	);
