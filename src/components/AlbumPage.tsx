@@ -54,7 +54,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				/>
 			</div>
 
-			<div className="w-full sm:max-w-md">
+			<div key={viewedAlbum.id} className="w-full sm:max-w-md opacity-0 animate-fade-in">
 				<div className="w-full sm:border sm:border-white/50 sm:rounded-xl sm:bg-white/10 sm:backdrop-blur-2xl">
 					<div className="flex flex-col items-start gap-3 sm:items-center sm:gap-4 sm:p-5">
 						<AlbumCover
@@ -78,7 +78,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				</div>
 			</div>
 
-			<div className="w-full max-w-lg mt-auto border border-white/50 rounded-2xl bg-white/10 backdrop-blur-2xl px-3 pb-1.5 pt-2 flex-shrink-0 sm:max-w-xs sm:mt-4">
+			<div key={`player-${viewedAlbum.id}`} className="w-full max-w-lg mt-auto border border-white/50 rounded-2xl bg-white/10 backdrop-blur-2xl px-3 pb-1.5 pt-2 flex-shrink-0 sm:max-w-xs sm:mt-4 opacity-0 animate-fade-in" style={{ animationDelay: "200ms" }}>
 				<p className="text-[9px] text-mac-text-muted tracking-wide truncate mb-2.5">
 					{playingTrack?.title ?? ""}
 				</p>
