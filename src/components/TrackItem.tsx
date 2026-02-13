@@ -23,7 +23,7 @@ export default function TrackItem({
 			onClick={onSelect}
 			className={`w-full flex items-center gap-2 pl-2 pr-3 py-1 text-left border-b border-white/50 last:border-b-0 first:rounded-t-lg last:rounded-b-lg text-[13px] ${
 				isActive
-					? "bg-mac-accent text-mac-accent-text"
+					? "bg-white/60 text-mac-text"
 					: "text-mac-text hover:bg-white/30 transition-colors"
 			}`}
 		>
