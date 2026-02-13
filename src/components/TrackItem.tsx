@@ -24,7 +24,7 @@ export default function TrackItem({
 			className={`w-full flex items-center gap-3 px-3 py-1.5 text-left border-b border-white/50 last:border-b-0 first:rounded-t-lg last:rounded-b-lg ${
 				isActive
 					? "bg-mac-accent text-mac-accent-text"
-					: "text-mac-text hover:bg-mac-accent/5"
+					: "text-mac-text hover:bg-white/30 transition-colors"
 			}`}
 		>
 			<span className="w-6 text-right text-xs tabular-nums opacity-50 flex-shrink-0">

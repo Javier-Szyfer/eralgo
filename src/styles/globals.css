@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 :root {
-	--mac-desktop: #e8e4de;
-	--mac-window-bg: #f5f3f0;
-	--mac-border: #c8c4be;
+	--mac-desktop: #e2e2e2;
+	--mac-window-bg: #f2f2f2;
+	--mac-border: #c8c8c8;
 	--mac-text: #1a1a1a;
 	--mac-text-muted: #888888;
 	--mac-accent: #4a4a4a;
