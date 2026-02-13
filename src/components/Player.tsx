@@ -22,20 +22,18 @@ export default function Player({
 	onSeek,
 }: PlayerProps) {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex items-center gap-3">
+			<PlayerControls
+				isPlaying={isPlaying}
+				onTogglePlay={onTogglePlay}
+				onPrev={onPrev}
+				onNext={onNext}
+			/>
 			<ProgressBar
 				currentTime={currentTime}
 				duration={duration}
 				onSeek={onSeek}
 			/>
-			<div className="flex items-center justify-center">
-				<PlayerControls
-					isPlaying={isPlaying}
-					onTogglePlay={onTogglePlay}
-					onPrev={onPrev}
-					onNext={onNext}
-				/>
-			</div>
 		</div>
 	);
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { Album } from "@/types";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { formatTime } from "@/components/ProgressBar";
 import AlbumToggle from "./AlbumToggle";
 import AlbumCover from "./AlbumCover";
 import Tracklist from "./Tracklist";
@@ -21,6 +22,16 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 	const playingTrack = playingAlbum.tracks[player.currentTrackIndex];
 
 	const isViewingPlayingAlbum = viewedAlbumIndex === player.playingAlbumIndex;
+
+	const totalDuration = useMemo(() => {
+		const seconds = viewedAlbum.tracks.reduce(
+			(sum, t) => sum + (player.trackDurations[t.id] ?? t.durationSeconds),
+			0,
+		);
+		const m = Math.floor(seconds / 60);
+		const s = Math.floor(seconds % 60);
+		return `${m}:${s.toString().padStart(2, "0")}`;
+	}, [viewedAlbum.tracks, player.trackDurations]);
 
 	return (
 		<div className="h-screen flex flex-col items-center overflow-y-auto py-6 px-4">
@@ -44,17 +55,19 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 						onSelectTrack={(i) => player.selectTrack(viewedAlbumIndex, i)}
 						trackDurations={player.trackDurations}
 					/>
+
+					<div className="w-full text-left text-[9px] text-mac-text-muted tracking-wide space-y-0.5">
+						<p>Release: {viewedAlbum.releaseDate}</p>
+						<p>Duration: {totalDuration}</p>
+					</div>
 				</div>
 			</div>
 
-			<div className="w-full max-w-md mt-4 border border-white/50 rounded-xl bg-white/10 backdrop-blur-2xl">
-				<div className="px-4 py-1.5 border-b border-white/30">
-					<p className="text-left text-[10px] text-mac-text-muted tracking-wide truncate">
-						{playingTrack?.title ?? ""}
-					</p>
-				</div>
-
-				<div className="p-4">
+			<div className="w-full max-w-xs mt-4 border border-white/50 rounded-2xl bg-white/10 backdrop-blur-2xl px-3 py-2">
+				<p className="text-[9px] text-mac-text-muted tracking-wide truncate mb-2.5">
+					{playingTrack?.title ?? ""}
+				</p>
+				<div>
 					<Player
 						isPlaying={player.isPlaying}
 						currentTime={player.currentTime}

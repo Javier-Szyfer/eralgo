@@ -6,9 +6,9 @@
 	--mac-desktop: #e2e2e2;
 	--mac-window-bg: #f2f2f2;
 	--mac-border: #c8c8c8;
-	--mac-text: #1a1a1a;
-	--mac-text-muted: #888888;
-	--mac-accent: #4a4a4a;
+	--mac-text: #333333;
+	--mac-text-muted: #999999;
+	--mac-accent: #5a5a5a;
 	--mac-accent-text: #f5f3f0;
 }
 

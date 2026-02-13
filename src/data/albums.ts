@@ -8,6 +8,7 @@ export const albums: [Album, Album] = [
 		title: "4y+",
 		artist: "eralgo",
 		year: 2024,
+		releaseDate: "December 2024",
 		coverUrl: "/4y+_artwork.jpeg",
 		tracks: [
 			{
@@ -51,7 +52,8 @@ export const albums: [Album, Album] = [
 		id: "often-after",
 		title: "often after",
 		artist: "eralgo",
-		year: 2025,
+		year: 2026,
+		releaseDate: "XX 2026",
 		coverUrl: "/often-after.jpeg",
 		tracks: [
 			{

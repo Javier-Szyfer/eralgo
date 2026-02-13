@@ -29,11 +29,11 @@ export default function PlayerControls({
 				className="w-8 h-8 rounded-full border border-white/50 bg-white/50 backdrop-blur-xl flex items-center justify-center hover:bg-white/60 transition-colors"
 			>
 				{isPlaying ? (
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="var(--mac-text)">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--mac-text)">
 						<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
 					</svg>
 				) : (
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="var(--mac-text)">
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="var(--mac-text)">
 						<path d="M8 5v14l11-7z" />
 					</svg>
 				)}
