@@ -3,7 +3,6 @@ export interface Track {
 	title: string;
 	duration: string;
 	durationSeconds: number;
-	audioUrl: string;
 }
 
 export interface Album {
