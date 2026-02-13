@@ -62,9 +62,9 @@ export const albums: [Album, Album] = [
 /** Server-side only — maps trackId → R2 object key */
 export const trackKeyMap: Record<string, string> = {
 	"oa-01": "often-after/01-track-one.mp3",
-	"4yp-01": "4y+/sum.wav",
-	"4yp-02": "4y+/watcher.wav",
-	"4yp-03": "4y+/lostfound.wav",
-	"4yp-04": "4y+/casa del capitano.wav",
-	"4yp-05": "4y+/eoy.wav",
+	"4yp-01": "4y+/sum.mp3",
+	"4yp-02": "4y+/watcher.mp3",
+	"4yp-03": "4y+/lostfound.mp3",
+	"4yp-04": "4y+/casa del capitano.mp3",
+	"4yp-05": "4y+/eoy.mp3",
 };
