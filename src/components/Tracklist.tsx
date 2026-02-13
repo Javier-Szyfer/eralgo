@@ -17,7 +17,7 @@ export default function Tracklist({
 	trackDurations,
 }: TracklistProps) {
 	return (
-		<div className="w-full border border-white/80 rounded-lg bg-white/20 backdrop-blur-xl max-h-[180px] overflow-y-auto tracklist-scroll">
+		<div className="w-full border border-white/80 rounded-lg bg-white/20 backdrop-blur-xl max-h-[140px] sm:max-h-[180px] overflow-y-auto tracklist-scroll">
 			<div className="flex flex-col">
 				{tracks.map((track, i) => (
 					<TrackItem

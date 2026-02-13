@@ -17,7 +17,7 @@ export default function AlbumToggle({
 				<button
 					key={album.id}
 					onClick={() => onSelect(i)}
-					className={`text-sm transition-colors ${
+					className={`text-xs transition-colors ${
 						activeIndex === i
 							? "text-mac-text"
 							: "text-mac-text-muted hover:text-mac-text"

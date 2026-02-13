@@ -24,6 +24,10 @@ body {
 	color: var(--mac-text);
 }
 
+.pb-safe {
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* Range input styling */
 input[type="range"] {
 	-webkit-appearance: none;
