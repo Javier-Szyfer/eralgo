@@ -53,7 +53,10 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 		<div className="h-dvh flex flex-col items-center px-4 py-4 overflow-y-auto sm:h-auto sm:min-h-screen sm:justify-center sm:py-6 pb-safe">
 			{/* Desktop: fixed nav on the left edge */}
 			<div className="hidden sm:block fixed left-0 top-6 pl-6 text-left z-10">
-				<div ref={infoRef} className="flex items-center gap-2 mb-3 relative">
+				<div ref={infoRef} className="flex items-center gap-2 mb-3 relative"
+					onMouseEnter={() => setShowInfo(true)}
+					onMouseLeave={() => setShowInfo(false)}
+				>
 					<p className="text-xs text-mac-text-muted">eralgo</p>
 					<button
 						onClick={() => setShowInfo(!showInfo)}
