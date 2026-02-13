@@ -55,7 +55,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				/>
 			</div>
 
-			<div className="w-full max-w-lg">
+			<div className="w-full max-w-md">
 				<div className="w-full border border-white/50 rounded-xl bg-white/10 backdrop-blur-2xl">
 					<div className="flex flex-col items-center gap-4 p-5">
 						<AlbumCover
