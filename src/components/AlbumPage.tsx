@@ -54,9 +54,9 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				/>
 			</div>
 
-			<div className="w-full max-w-[calc(40dvh+2.5rem)] sm:max-w-md">
-				<div className="w-full border border-white/50 rounded-xl bg-white/10 backdrop-blur-2xl">
-					<div className="flex flex-col items-center gap-4 p-5">
+			<div className="w-full sm:max-w-md">
+				<div className="w-full sm:border sm:border-white/50 sm:rounded-xl sm:bg-white/10 sm:backdrop-blur-2xl">
+					<div className="flex flex-col items-start gap-3 sm:items-center sm:gap-4 sm:p-5">
 						<AlbumCover
 							src={viewedAlbum.coverUrl}
 							alt={`${viewedAlbum.title} by ${viewedAlbum.artist}`}
