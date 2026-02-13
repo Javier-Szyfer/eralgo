@@ -3,28 +3,67 @@
 @tailwind utilities;
 
 :root {
-  --background-rgb: 113, 27, 20;
+	--mac-desktop: #e8e4de;
+	--mac-window-bg: #f5f3f0;
+	--mac-border: #c8c4be;
+	--mac-text: #1a1a1a;
+	--mac-text-muted: #888888;
+	--mac-accent: #4a4a4a;
+	--mac-accent-text: #f5f3f0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 113, 27, 20;
-  }
+* {
+	box-sizing: border-box;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: var(--mac-desktop);
+	color: var(--mac-text);
+}
+
+/* Range input styling */
+input[type="range"] {
+	-webkit-appearance: none;
+	appearance: none;
+	background: transparent;
+	cursor: pointer;
+	width: 100%;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+	height: 2px;
+	border-radius: 1px;
+	background: var(--mac-border);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	background: var(--mac-text);
+	margin-top: -4px;
+}
+
+input[type="range"]::-moz-range-track {
+	height: 2px;
+	border-radius: 1px;
+	background: var(--mac-border);
+}
+
+input[type="range"]::-moz-range-thumb {
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	background: var(--mac-text);
+	border: none;
 }
 
 ::selection {
-  background-color: #be858577;
-  color: #711B14;
-}
-
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	background-color: var(--mac-accent);
+	color: var(--mac-accent-text);
 }

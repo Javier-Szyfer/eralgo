@@ -5,8 +5,8 @@ import "../styles/globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "eralgo | 4y+",
-	description: "eralgo",
+	title: "eralgo",
+	description: "eralgo - music",
 };
 
 export default function RootLayout({

@@ -1,3 +1,0 @@
-type MusicPlayerContextType = {
-	src: string;
-};
