@@ -63,6 +63,25 @@ input[type="range"]::-moz-range-thumb {
 	border: none;
 }
 
+/* Subtle tracklist scrollbar */
+.tracklist-scroll::-webkit-scrollbar {
+	width: 4px;
+}
+
+.tracklist-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.tracklist-scroll::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 2px;
+}
+
+.tracklist-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
 ::selection {
 	background-color: var(--mac-accent);
 	color: var(--mac-accent-text);

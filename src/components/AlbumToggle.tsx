@@ -12,7 +12,7 @@ export default function AlbumToggle({
 	onSelect,
 }: AlbumToggleProps) {
 	return (
-		<div className="flex items-center justify-center gap-4 py-3">
+		<div className="flex flex-col items-start gap-1 py-3">
 			{albums.map((album, i) => (
 				<button
 					key={album.id}

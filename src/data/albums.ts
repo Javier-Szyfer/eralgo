@@ -4,6 +4,23 @@ const R2_BASE = "https://pub-9025265ed5a24ffcbe9c5c7a29a18fa2.r2.dev";
 
 export const albums: [Album, Album] = [
 	{
+		id: "often-after",
+		title: "often after",
+		artist: "eralgo",
+		year: 2026,
+		releaseDate: "XX 2026",
+		coverUrl: "/often-after.jpeg",
+		tracks: [
+			{
+				id: "oa-01",
+				title: "track one",
+				duration: "4:10",
+				durationSeconds: 250,
+				audioUrl: `${R2_BASE}/often-after/01-track-one.mp3`,
+			},
+		],
+	},
+	{
 		id: "4y-plus",
 		title: "4y+",
 		artist: "eralgo",
@@ -45,23 +62,6 @@ export const albums: [Album, Album] = [
 				duration: "4:12",
 				durationSeconds: 252,
 				audioUrl: `${R2_BASE}/4y+/eoy.wav`,
-			},
-		],
-	},
-	{
-		id: "often-after",
-		title: "often after",
-		artist: "eralgo",
-		year: 2026,
-		releaseDate: "XX 2026",
-		coverUrl: "/often-after.jpeg",
-		tracks: [
-			{
-				id: "oa-01",
-				title: "track one",
-				duration: "4:10",
-				durationSeconds: 250,
-				audioUrl: `${R2_BASE}/often-after/01-track-one.mp3`,
 			},
 		],
 	},
