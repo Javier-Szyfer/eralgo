@@ -6,7 +6,7 @@ export const albums: [Album, Album] = [
 		title: "often after",
 		artist: "eralgo",
 		year: 2026,
-		releaseDate: "Release: -",
+		releaseDate: "-",
 		coverUrl: "/often-after.jpeg",
 		tracks: [
 			{
