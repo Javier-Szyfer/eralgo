@@ -3,8 +3,11 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { Album } from "@/types";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
+import { useAudioAnalyser } from "@/hooks/useAudioAnalyser";
 import AlbumToggle from "./AlbumToggle";
 import AlbumCover from "./AlbumCover";
+import ReactiveAlbumCover from "./ReactiveAlbumCover";
+import BackgroundGrid from "./BackgroundGrid";
 import Tracklist from "./Tracklist";
 import Player from "./Player";
 
@@ -34,6 +37,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 	}, [showInfo]);
 
 	const player = useAudioPlayer(albums);
+	const { getFrequencyData } = useAudioAnalyser(player.audioRef);
 	const playingAlbum = albums[player.playingAlbumIndex];
 	const playingTrack = playingAlbum.tracks[player.currentTrackIndex];
 
@@ -50,6 +54,8 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 	}, [viewedAlbum.tracks, player.trackDurations]);
 
 	return (
+		<>
+		{/* <BackgroundGrid /> */}
 		<div className="h-dvh flex flex-col items-center px-4 py-4 overflow-y-auto sm:h-auto sm:min-h-screen sm:justify-center sm:py-6 pb-safe">
 			{/* Desktop: fixed nav on the left edge */}
 			<div className="hidden sm:block fixed left-0 top-6 pl-6 text-left z-10">
@@ -107,9 +113,11 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 			<div key={viewedAlbum.id} className="w-full sm:max-w-md opacity-0 animate-fade-in">
 				<div className="w-full sm:border sm:border-white/50 sm:rounded-xl sm:bg-white/10 sm:backdrop-blur-2xl">
 					<div className="flex flex-col items-start gap-3 sm:items-center sm:gap-4 sm:p-5">
-						<AlbumCover
+						<ReactiveAlbumCover
 							src={viewedAlbum.coverUrl}
 							alt={`${viewedAlbum.title} by ${viewedAlbum.artist}`}
+							getFrequencyData={getFrequencyData}
+							isPlaying={player.isPlaying && isViewingPlayingAlbum}
 						/>
 
 						<Tracklist
@@ -146,5 +154,6 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				</div>
 			</div>
 		</div>
+		</>
 	);
 }

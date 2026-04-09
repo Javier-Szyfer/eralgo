@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { Album } from "@/types";
+import { HTML_IN_CANVAS_SUPPORTED } from "@/lib/htmlInCanvas";
 
 /** Cache signed URLs in-memory so we don't re-fetch on seek/pause/resume */
 const signedUrlCache = new Map<string, { url: string; expiresAt: number }>();
@@ -37,6 +38,7 @@ export function useAudioPlayer(albums: [Album, Album]) {
 	// Create audio element once
 	if (!audioRef.current && typeof window !== "undefined") {
 		audioRef.current = new Audio();
+		if (HTML_IN_CANVAS_SUPPORTED) audioRef.current.crossOrigin = "anonymous";
 		audioRef.current.volume = 0.8;
 	}
 
@@ -53,6 +55,7 @@ export function useAudioPlayer(albums: [Album, Album]) {
 					const url = await getSignedUrl(track.id);
 					if (cancelled) return;
 					const audio = new Audio();
+					if (HTML_IN_CANVAS_SUPPORTED) audio.crossOrigin = "anonymous";
 					audio.preload = "metadata";
 					audio.src = url;
 					audio.addEventListener("loadedmetadata", () => {
@@ -225,5 +228,6 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		prevTrack,
 		seekTo,
 		selectTrack,
+		audioRef,
 	};
 }
