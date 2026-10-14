@@ -40,52 +40,10 @@ export function useAudioPlayer(albums: Album[]) {
 	const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [duration, setDuration] = useState(0);
-	const [trackDurations, setTrackDurations] = useState<Record<string, number>>(
-		{},
-	);
 	// Track which src is currently loaded to avoid redundant fetches
 	const loadedTrackIdRef = useRef<string | null>(null);
 	// Set when the user picks a track, so it starts playing once loaded
 	const autoplayRef = useRef(false);
-
-	// Preload metadata for all tracks to get real durations
-	useEffect(() => {
-		let cancelled = false;
-		const audioElements: HTMLAudioElement[] = [];
-
-		async function preload() {
-			for (const track of albums.flatMap((album) => album.tracks)) {
-				if (cancelled) return;
-				try {
-					const url = await getSignedUrl(track.id);
-					if (cancelled) return;
-					const audio = createAudio();
-					audio.preload = "metadata";
-					audio.src = url;
-					audio.addEventListener("loadedmetadata", () => {
-						if (audio.duration && Number.isFinite(audio.duration)) {
-							setTrackDurations((prev) => ({
-								...prev,
-								[track.id]: audio.duration,
-							}));
-						}
-					});
-					audioElements.push(audio);
-				} catch {
-					// Fall back to durationSeconds
-				}
-			}
-		}
-
-		preload();
-
-		return () => {
-			cancelled = true;
-			audioElements.forEach((a) => {
-				a.src = "";
-			});
-		};
-	}, [albums]);
 
 	// Load the current track whenever it changes
 	useEffect(() => {
@@ -226,7 +184,6 @@ export function useAudioPlayer(albums: Album[]) {
 		currentTrackIndex,
 		currentTime,
 		duration,
-		trackDurations,
 		togglePlay,
 		nextTrack,
 		prevTrack,

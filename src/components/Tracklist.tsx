@@ -6,7 +6,6 @@ interface TracklistProps {
 	currentTrackIndex: number;
 	isPlaying: boolean;
 	onSelectTrack: (index: number) => void;
-	trackDurations: Record<string, number>;
 }
 
 export default function Tracklist({
@@ -14,7 +13,6 @@ export default function Tracklist({
 	currentTrackIndex,
 	isPlaying,
 	onSelectTrack,
-	trackDurations,
 }: TracklistProps) {
 	return (
 		<div className="w-full border border-white/80 rounded-lg bg-white/20 backdrop-blur-xl max-h-[140px] sm:max-h-[180px] overflow-y-auto tracklist-scroll">
@@ -27,7 +25,6 @@ export default function Tracklist({
 						isActive={i === currentTrackIndex}
 						isPlaying={isPlaying}
 						onSelect={() => onSelectTrack(i)}
-						realDuration={trackDurations[track.id]}
 					/>
 				))}
 			</div>

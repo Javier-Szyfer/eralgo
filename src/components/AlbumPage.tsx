@@ -26,7 +26,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 	const isViewingPlayingAlbum = viewedAlbumIndex === player.playingAlbumIndex;
 
 	const totalDuration = viewedAlbum.tracks.reduce(
-		(sum, t) => sum + (player.trackDurations[t.id] ?? t.durationSeconds),
+		(sum, t) => sum + t.durationSeconds,
 		0,
 	);
 
@@ -81,7 +81,6 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 							}
 							isPlaying={player.isPlaying}
 							onSelectTrack={(i) => player.selectTrack(viewedAlbumIndex, i)}
-							trackDurations={player.trackDurations}
 						/>
 
 						<div className="w-full space-y-0.5 text-left text-[9px] text-mac-text-muted tracking-wide">

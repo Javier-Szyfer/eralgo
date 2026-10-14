@@ -7,7 +7,6 @@ interface TrackItemProps {
 	isActive: boolean;
 	isPlaying: boolean;
 	onSelect: () => void;
-	realDuration?: number;
 }
 
 export default function TrackItem({
@@ -16,7 +15,6 @@ export default function TrackItem({
 	isActive,
 	isPlaying,
 	onSelect,
-	realDuration,
 }: TrackItemProps) {
 	return (
 		<button
@@ -86,7 +84,7 @@ export default function TrackItem({
 			</span>
 			<span className="flex-1 truncate">{track.title}</span>
 			<span className="text-[11px] tabular-nums opacity-50 shrink-0">
-				{formatTime(realDuration ?? track.durationSeconds)}
+				{formatTime(track.durationSeconds)}
 			</span>
 		</button>
 	);
