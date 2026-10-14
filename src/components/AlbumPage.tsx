@@ -43,6 +43,11 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 
 	const isViewingPlayingAlbum = viewedAlbumIndex === player.playingAlbumIndex;
 
+	const selectAlbum = (i: 0 | 1) => {
+		setViewedAlbumIndex(i);
+		if (!player.hasPlayed) player.cueAlbum(i);
+	};
+
 	const totalDuration = useMemo(() => {
 		const seconds = viewedAlbum.tracks.reduce(
 			(sum, t) => sum + (player.trackDurations[t.id] ?? t.durationSeconds),
@@ -81,7 +86,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
-					onSelect={(i) => setViewedAlbumIndex(i as 0 | 1)}
+					onSelect={(i) => selectAlbum(i as 0 | 1)}
 				/>
 			</div>
 
@@ -106,7 +111,7 @@ export default function AlbumPage({ albums }: AlbumPageProps) {
 				<AlbumToggle
 					albums={albums}
 					activeIndex={viewedAlbumIndex}
-					onSelect={(i) => setViewedAlbumIndex(i as 0 | 1)}
+					onSelect={(i) => selectAlbum(i as 0 | 1)}
 				/>
 			</div>
 

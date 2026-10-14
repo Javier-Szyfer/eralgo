@@ -25,6 +25,7 @@ async function getSignedUrl(trackId: string): Promise<string> {
 export function useAudioPlayer(albums: [Album, Album]) {
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 	const [isPlaying, setIsPlaying] = useState(false);
+	const [hasPlayed, setHasPlayed] = useState(false);
 	const [playingAlbumIndex, setPlayingAlbumIndex] = useState(0);
 	const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 	const [currentTime, setCurrentTime] = useState(0);
@@ -135,7 +136,10 @@ export function useAudioPlayer(albums: [Album, Album]) {
 				setCurrentTime(0);
 			}
 		};
-		const onPlay = () => setIsPlaying(true);
+		const onPlay = () => {
+			setIsPlaying(true);
+			setHasPlayed(true);
+		};
 		const onPause = () => { if (!audio.ended) setIsPlaying(false); };
 
 		audio.addEventListener("timeupdate", onTimeUpdate);
@@ -216,8 +220,16 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		[albums],
 	);
 
+	/** Queue an album's first track without starting playback */
+	const cueAlbum = useCallback((albumIndex: number) => {
+		setPlayingAlbumIndex(albumIndex);
+		setCurrentTrackIndex(0);
+		setCurrentTime(0);
+	}, []);
+
 	return {
 		isPlaying,
+		hasPlayed,
 		playingAlbumIndex,
 		currentTrackIndex,
 		currentTime,
@@ -228,6 +240,7 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		prevTrack,
 		seekTo,
 		selectTrack,
+		cueAlbum,
 		audioRef,
 	};
 }
