@@ -1,3 +1,2 @@
-eralgo
+e_r_a_l_g_o
 
-if you'd like to purchase the digital release -> https://eralgo.bandcamp.com/
