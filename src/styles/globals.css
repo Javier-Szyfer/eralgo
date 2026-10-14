@@ -1,105 +1,97 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-	--mac-desktop: #e2e2e2;
-	--mac-window-bg: #f2f2f2;
-	--mac-border: #c8c8c8;
-	--mac-text: #333333;
-	--mac-text-muted: #999999;
-	--mac-accent: #5a5a5a;
-	--mac-accent-text: #f5f3f0;
+@theme {
+	--color-mac-desktop: #e2e2e2;
+	--color-mac-border: #c8c8c8;
+	--color-mac-text: #333333;
+	--color-mac-text-muted: #999999;
+	--color-mac-accent: #5a5a5a;
+	--color-mac-accent-text: #f5f3f0;
+
+	--animate-fade-in: fade-in 1s ease-out forwards;
+	--animate-fade-in-fast: fade-in 0.3s ease-out forwards;
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 }
 
-* {
-	box-sizing: border-box;
+@layer base {
+	body {
+		overflow: hidden;
+		background-color: var(--color-mac-desktop);
+		color: var(--color-mac-text);
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	::selection {
+		background-color: var(--color-mac-accent);
+		color: var(--color-mac-accent-text);
+	}
+
+	input[type="range"] {
+		appearance: none;
+		background: transparent;
+		cursor: pointer;
+		width: 100%;
+	}
+
+	input[type="range"]::-webkit-slider-runnable-track {
+		height: 2px;
+		border-radius: 1px;
+		background: var(--color-mac-border);
+	}
+
+	input[type="range"]::-webkit-slider-thumb {
+		appearance: none;
+		height: 10px;
+		width: 10px;
+		border-radius: 50%;
+		background: var(--color-mac-text-muted);
+		margin-top: -4px;
+	}
+
+	input[type="range"]::-moz-range-track {
+		height: 2px;
+		border-radius: 1px;
+		background: var(--color-mac-border);
+	}
+
+	input[type="range"]::-moz-range-thumb {
+		height: 10px;
+		width: 10px;
+		border-radius: 50%;
+		background: var(--color-mac-text-muted);
+		border: none;
+	}
 }
 
-body {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: var(--mac-desktop);
-	color: var(--mac-text);
-}
-
-.pb-safe {
+@utility pb-safe {
 	padding-bottom: env(safe-area-inset-bottom);
 }
 
-@keyframes fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-.animate-fade-in {
-	animation: fade-in 1s ease-out forwards;
-}
-
-.animate-fade-in-fast {
-	animation: fade-in 0.3s ease-out forwards;
-}
-
-/* Range input styling */
-input[type="range"] {
-	-webkit-appearance: none;
-	appearance: none;
-	background: transparent;
-	cursor: pointer;
-	width: 100%;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-	height: 2px;
-	border-radius: 1px;
-	background: var(--mac-border);
-}
-
-input[type="range"]::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	appearance: none;
-	height: 10px;
-	width: 10px;
-	border-radius: 50%;
-	background: var(--mac-text-muted);
-	margin-top: -4px;
-}
-
-input[type="range"]::-moz-range-track {
-	height: 2px;
-	border-radius: 1px;
-	background: var(--mac-border);
-}
-
-input[type="range"]::-moz-range-thumb {
-	height: 10px;
-	width: 10px;
-	border-radius: 50%;
-	background: var(--mac-text-muted);
-	border: none;
-}
-
-/* Subtle tracklist scrollbar */
-.tracklist-scroll::-webkit-scrollbar {
-	width: 4px;
-}
-
-.tracklist-scroll::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-.tracklist-scroll::-webkit-scrollbar-thumb {
-	background: rgba(0, 0, 0, 0.15);
-	border-radius: 2px;
-}
-
-.tracklist-scroll {
+@utility tracklist-scroll {
 	scrollbar-width: thin;
-	scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
-}
+	scrollbar-color: rgb(0 0 0 / 0.15) transparent;
 
-::selection {
-	background-color: var(--mac-accent);
-	color: var(--mac-accent-text);
+	&::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgb(0 0 0 / 0.15);
+		border-radius: 2px;
+	}
 }

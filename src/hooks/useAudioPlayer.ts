@@ -1,8 +1,6 @@
-"use client";
-
-import { useState, useRef, useEffect, useCallback } from "react";
-import type { Album } from "@/types";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HTML_IN_CANVAS_SUPPORTED } from "@/lib/htmlInCanvas";
+import type { Album } from "@/types";
 
 /** Cache signed URLs in-memory so we don't re-fetch on seek/pause/resume */
 const signedUrlCache = new Map<string, { url: string; expiresAt: number }>();
@@ -22,8 +20,20 @@ async function getSignedUrl(trackId: string): Promise<string> {
 	return url;
 }
 
-export function useAudioPlayer(albums: [Album, Album]) {
-	const audioRef = useRef<HTMLAudioElement | null>(null);
+function createAudio(): HTMLAudioElement {
+	const audio = new Audio();
+	// The Web Audio analyser needs CORS-enabled audio
+	if (HTML_IN_CANVAS_SUPPORTED) audio.crossOrigin = "anonymous";
+	return audio;
+}
+
+export function useAudioPlayer(albums: Album[]) {
+	const [audio] = useState(() => {
+		if (typeof window === "undefined") return null;
+		const audio = createAudio();
+		audio.volume = 0.8;
+		return audio;
+	});
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [hasPlayed, setHasPlayed] = useState(false);
 	const [playingAlbumIndex, setPlayingAlbumIndex] = useState(0);
@@ -35,13 +45,8 @@ export function useAudioPlayer(albums: [Album, Album]) {
 	);
 	// Track which src is currently loaded to avoid redundant fetches
 	const loadedTrackIdRef = useRef<string | null>(null);
-
-	// Create audio element once
-	if (!audioRef.current && typeof window !== "undefined") {
-		audioRef.current = new Audio();
-		if (HTML_IN_CANVAS_SUPPORTED) audioRef.current.crossOrigin = "anonymous";
-		audioRef.current.volume = 0.8;
-	}
+	// Set when the user picks a track, so it starts playing once loaded
+	const autoplayRef = useRef(false);
 
 	// Preload metadata for all tracks to get real durations
 	useEffect(() => {
@@ -49,18 +54,16 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		const audioElements: HTMLAudioElement[] = [];
 
 		async function preload() {
-			const allTracks = [...albums[0].tracks, ...albums[1].tracks];
-			for (const track of allTracks) {
+			for (const track of albums.flatMap((album) => album.tracks)) {
 				if (cancelled) return;
 				try {
 					const url = await getSignedUrl(track.id);
 					if (cancelled) return;
-					const audio = new Audio();
-					if (HTML_IN_CANVAS_SUPPORTED) audio.crossOrigin = "anonymous";
+					const audio = createAudio();
 					audio.preload = "metadata";
 					audio.src = url;
 					audio.addEventListener("loadedmetadata", () => {
-						if (audio.duration && isFinite(audio.duration)) {
+						if (audio.duration && Number.isFinite(audio.duration)) {
 							setTrackDurations((prev) => ({
 								...prev,
 								[track.id]: audio.duration,
@@ -69,7 +72,7 @@ export function useAudioPlayer(albums: [Album, Album]) {
 					});
 					audioElements.push(audio);
 				} catch {
-					// Silently skip — we'll fall back to durationSeconds
+					// Fall back to durationSeconds
 				}
 			}
 		}
@@ -84,52 +87,48 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		};
 	}, [albums]);
 
-	// Sync audio source when track or playing album changes
+	// Load the current track whenever it changes
 	useEffect(() => {
-		const audio = audioRef.current;
 		if (!audio) return;
 
 		const track = albums[playingAlbumIndex].tracks[currentTrackIndex];
-		if (!track) return;
-
-		// Skip if this track is already loaded
-		if (loadedTrackIdRef.current === track.id) return;
+		if (!track || loadedTrackIdRef.current === track.id) return;
 
 		let cancelled = false;
 
-		async function loadTrack() {
+		const loadTrack = async () => {
 			try {
 				const url = await getSignedUrl(track.id);
 				if (cancelled) return;
 				loadedTrackIdRef.current = track.id;
-				audio!.src = url;
-				audio!.load();
-				if (isPlaying) {
-					audio!.play().catch(() => {});
+				audio.src = url;
+				audio.load();
+				if (isPlaying || autoplayRef.current) {
+					audio.play().catch(() => {});
 				}
+				autoplayRef.current = false;
 			} catch {
 				// Failed to get signed URL
 			}
-		}
+		};
 
 		loadTrack();
 
 		return () => {
 			cancelled = true;
 		};
-	}, [currentTrackIndex, playingAlbumIndex, albums, isPlaying]);
+	}, [audio, albums, playingAlbumIndex, currentTrackIndex, isPlaying]);
 
 	// Audio event listeners
 	useEffect(() => {
-		const audio = audioRef.current;
 		if (!audio) return;
 
-		const playingTracks = albums[playingAlbumIndex].tracks;
+		const trackCount = albums[playingAlbumIndex].tracks.length;
 
 		const onTimeUpdate = () => setCurrentTime(audio.currentTime);
 		const onDurationChange = () => setDuration(audio.duration || 0);
 		const onEnded = () => {
-			if (currentTrackIndex < playingTracks.length - 1) {
+			if (currentTrackIndex < trackCount - 1) {
 				setCurrentTrackIndex((i) => i + 1);
 			} else {
 				setIsPlaying(false);
@@ -140,7 +139,9 @@ export function useAudioPlayer(albums: [Album, Album]) {
 			setIsPlaying(true);
 			setHasPlayed(true);
 		};
-		const onPause = () => { if (!audio.ended) setIsPlaying(false); };
+		const onPause = () => {
+			if (!audio.ended) setIsPlaying(false);
+		};
 
 		audio.addEventListener("timeupdate", onTimeUpdate);
 		audio.addEventListener("durationchange", onDurationChange);
@@ -155,41 +156,38 @@ export function useAudioPlayer(albums: [Album, Album]) {
 			audio.removeEventListener("play", onPlay);
 			audio.removeEventListener("pause", onPause);
 		};
-	}, [currentTrackIndex, playingAlbumIndex, albums]);
+	}, [audio, albums, playingAlbumIndex, currentTrackIndex]);
 
 	const togglePlay = useCallback(() => {
-		const audio = audioRef.current;
 		if (!audio) return;
 		if (audio.paused) {
 			audio.play().catch(() => {});
 		} else {
 			audio.pause();
 		}
-	}, []);
+	}, [audio]);
 
 	const nextTrack = useCallback(() => {
-		const playingTracks = albums[playingAlbumIndex].tracks;
-		setCurrentTrackIndex((i) =>
-			i < playingTracks.length - 1 ? i + 1 : i,
-		);
+		const trackCount = albums[playingAlbumIndex].tracks.length;
+		setCurrentTrackIndex((i) => (i < trackCount - 1 ? i + 1 : i));
 	}, [albums, playingAlbumIndex]);
 
 	const prevTrack = useCallback(() => {
-		const audio = audioRef.current;
 		if (audio && audio.currentTime > 3) {
 			audio.currentTime = 0;
 		} else {
 			setCurrentTrackIndex((i) => (i > 0 ? i - 1 : i));
 		}
-	}, []);
+	}, [audio]);
 
-	const seekTo = useCallback((time: number) => {
-		const audio = audioRef.current;
-		if (audio) {
+	const seekTo = useCallback(
+		(time: number) => {
+			if (!audio) return;
 			audio.currentTime = time;
 			setCurrentTime(time);
-		}
-	}, []);
+		},
+		[audio],
+	);
 
 	const selectTrack = useCallback(
 		(albumIndex: number, trackIndex: number) => {
@@ -200,24 +198,17 @@ export function useAudioPlayer(albums: [Album, Album]) {
 			setCurrentTrackIndex(trackIndex);
 			setCurrentTime(0);
 
-			const audio = audioRef.current;
-			if (!audio) return;
-
-			async function load() {
-				try {
-					const url = await getSignedUrl(track.id);
-					loadedTrackIdRef.current = track.id;
-					audio!.src = url;
-					audio!.load();
-					audio!.play().catch(() => {});
-				} catch {
-					// Failed to get signed URL
+			if (loadedTrackIdRef.current === track.id) {
+				// Re-selecting the loaded track restarts it
+				if (audio) {
+					audio.currentTime = 0;
+					audio.play().catch(() => {});
 				}
+			} else {
+				autoplayRef.current = true;
 			}
-
-			load();
 		},
-		[albums],
+		[albums, audio],
 	);
 
 	/** Queue an album's first track without starting playback */
@@ -228,6 +219,7 @@ export function useAudioPlayer(albums: [Album, Album]) {
 	}, []);
 
 	return {
+		audio,
 		isPlaying,
 		hasPlayed,
 		playingAlbumIndex,
@@ -241,6 +233,5 @@ export function useAudioPlayer(albums: [Album, Album]) {
 		seekTo,
 		selectTrack,
 		cueAlbum,
-		audioRef,
 	};
 }

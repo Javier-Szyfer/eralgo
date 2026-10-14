@@ -5,7 +5,6 @@ interface PlayerProps {
 	isPlaying: boolean;
 	currentTime: number;
 	duration: number;
-	trackTitle: string;
 	onTogglePlay: () => void;
 	onPrev: () => void;
 	onNext: () => void;

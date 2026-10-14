@@ -1,16 +1,10 @@
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
+import { formatTime } from "@/lib/formatTime";
 
 interface ProgressBarProps {
 	currentTime: number;
 	duration: number;
 	onSeek: (time: number) => void;
-}
-
-export function formatTime(seconds: number): string {
-	if (!seconds || !isFinite(seconds)) return "0:00";
-	const m = Math.floor(seconds / 60);
-	const s = Math.floor(seconds % 60);
-	return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 export default function ProgressBar({

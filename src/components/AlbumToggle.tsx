@@ -1,7 +1,7 @@
 import type { Album } from "@/types";
 
 interface AlbumToggleProps {
-	albums: [Album, Album];
+	albums: Album[];
 	activeIndex: number;
 	onSelect: (index: number) => void;
 }
@@ -15,6 +15,7 @@ export default function AlbumToggle({
 		<div className="flex flex-col items-start gap-1 py-3">
 			{albums.map((album, i) => (
 				<button
+					type="button"
 					key={album.id}
 					onClick={() => onSelect(i)}
 					className={`text-xs transition-colors ${
